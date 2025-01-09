@@ -15,7 +15,7 @@ type ClientInterfacer interface {
 
 	SocketSend(message packets.Msg)
 
-	SocketSendAs(message packets.Msg, senderId uint64)
+    SocketSendAs(message packets.Msg, senderId uint64)
 
 	PassTopeer(message packets.Msg, peerId uint64)
 

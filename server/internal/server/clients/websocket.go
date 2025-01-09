@@ -13,11 +13,11 @@ import (
 )
 
 type WebSocketClient struct {
-	id       uint64
-	conn     *websocket.Conn
-	hub      *server.Hub
-	sendChan chan *packets.Packet
-	logger   *log.Logger
+	id           uint64
+	conn         *websocket.Conn
+	hub          *server.Hub
+	sendChan     chan *packets.Packet
+	logger       *log.Logger
 }
 
 func NewWebSocketClient(hub *server.Hub, writer http.ResponseWriter, request *http.Request) (server.ClientInterfacer, error) {
@@ -32,12 +32,12 @@ func NewWebSocketClient(hub *server.Hub, writer http.ResponseWriter, request *ht
 		return nil, err
 	}
 
-	c := &WebSocketClient{
-		hub:      hub,
-		conn:     conn,
-		sendChan: make(chan *packets.Packet, 256),
-		logger:   log.New(log.Writer(), "Client unknown: ", log.LstdFlags),
-	}
+    c := &WebSocketClient{
+        hub:      hub,
+        conn:     conn,
+        sendChan: make(chan *packets.Packet, 256),
+        logger:   log.New(log.Writer(), "Client unknown: ", log.LstdFlags),
+    }
 
 	return c, nil
 }
@@ -57,7 +57,7 @@ func (c *WebSocketClient) SocketSend(message packets.Msg) {
 	c.SocketSendAs(message, c.id)
 }
 
-func (c *WebSocketClient) SocketsSendAs(message packets.Msg, senderID uint64) {
+func (c *WebSocketClient) SocketSendAs(message packets.Msg, senderID uint64) {
 	select {
 	case c.sendChan <- &packets.Packet{SenderId: senderID, Msg: message}:
 	default:
@@ -70,7 +70,6 @@ func (c *WebSocketClient) PassTopeer(message packets.Msg, peerID uint64) {
 		peer.ProcessMessage(c.id, message)
 	}
 }
-
 
 func (c *WebSocketClient) Broadcast(message packets.Msg) {
 	c.hub.BroadcastChan <- &packets.Packet{SenderId: c.id, Msg: message}

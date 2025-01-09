@@ -21,14 +21,14 @@ func main() {
 	hub := server.NewHub()
 
 	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
-		hub.Service(clients.NewWebSocketClient, w, r)
+		hub.Server(clients.NewWebSocketClient, w, r)
 	})
 
 	go hub.Run()
-	addr := server.NewHub(":%d", *port)
+	addr := fmt.Sprintf(":%d", *port)
 
 	log.Printf("Starting server on %s", addr)
-	err := http.ListenAndServe(addr.nil)
+	err := http.ListenAndServe(addr, nil)
 
 	if err != nil {
 		log.Fatalf("failed to start server; %v", err)

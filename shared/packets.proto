@@ -1,0 +1,16 @@
+syntax = "proto3";
+package packets;
+option go_package = "pkg/packets";
+
+// Define your messages
+message ChatMessage { string msg = 1; }
+message IdMessage { uint64 id = 1; }
+
+// Define the main Packet message
+message Packet {
+    uint64 sender_id = 1;
+    oneof msg {
+        ChatMessage chat = 2;
+        IdMessage id = 3;
+    }
+}
